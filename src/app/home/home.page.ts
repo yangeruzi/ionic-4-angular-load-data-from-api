@@ -9,9 +9,11 @@ import { HttpClient } from '@angular/common/http';
 })
 export class HomePage {
   data: string;
+  error: string;
 
   constructor(private http: HttpClient) {
     this.data = '';
+    this.error = '';
   }
 
   ionViewWillEnter() {
@@ -21,6 +23,10 @@ export class HomePage {
             data => {
               // Set the data to display in the template
               this.data = JSON.stringify(data);
+            },
+            err => {
+              // Set the error information to display in the template
+              this.error = `An error occurred, the data could not be retrieved: Status: ${err.status}, Message: ${err.statusText}`;
             }
         );
   }
