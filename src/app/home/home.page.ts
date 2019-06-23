@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -23,6 +24,12 @@ export class HomePage {
     await this.presentLoading();
     // Load the data
     this.prepareDataRequest()
+        .pipe(
+            finalize(async () => {
+              // Hide the loading spinner on success or error
+              await this.loading.dismiss();
+            })
+        )
         .subscribe(
             data => {
               // Set the data to display in the template
